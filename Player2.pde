@@ -7,6 +7,7 @@ void setup()
  size(1000,300); 
  p1 = new Player();
  t1 = new Terrain();
+ objectGenerator(t1);
 }
 
 void draw()

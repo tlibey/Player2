@@ -1,28 +1,71 @@
+void objectGenerator(Terrain t1) //add Enemies e1
+{
+  int scaleFactor = 30;
+ Table level = loadTable("levelTest.csv");
+  for(int ii = 0; ii<level.getRowCount(); ii ++)
+    for(int jj = 0; jj <level.getColumnCount();jj++)
+    {
+      int val = level.getInt(ii,jj);
+     if(val!=0)
+      {
+        String v1 = ""+val;
+        if(v1.charAt(0) == '6')
+        {
+        // String im = v1.charAt(5)+v1.charAt(6);
+         int h = int(v1.charAt(3)+""+v1.charAt(4));
+         int w = int(v1.charAt(1)+""+v1.charAt(2));
+         t1.terrains.add(new TerrainOJ(jj*scaleFactor,ii*scaleFactor,w,h,"lWedge"));
+        }
+          else if(v1.charAt(0) == '7')
+        {
+         int h = int(v1.charAt(3)+""+v1.charAt(4));
+         int w = int(v1.charAt(1)+""+v1.charAt(2));
+         t1.terrains.add(new TerrainOJ(jj*scaleFactor,ii*scaleFactor,w,h,"rWedge"));
+        }
+        else if(v1.charAt(0) == '8')
+        {
+         int h = int(v1.charAt(3)+""+v1.charAt(4));
+         int w = int(v1.charAt(1)+""+v1.charAt(2));
+         t1.terrains.add(new TerrainOJ(jj*scaleFactor,ii*scaleFactor,w,h,"rect"));
+        }
+        
+      }
+    }
+  
+   t1.terrains.add(new TerrainOJ(50,height-30,30,30,"rect")); // 8
+   t1.terrains.add(new TerrainOJ(175,height-50,140,-20,"lWedge"));
+   t1.terrains.add(new TerrainOJ(316,height-50,80,-20,"rWedge"));
+   t1.terrains.add(new TerrainOJ(516,height-50,80,20,"rWedge"));
+  
+  
+  
+}
+
 class Terrain
 {
-  TerrainOJ rect1;
-  TerrainOJ tri1;
-  TerrainOJ tri2;
   
+    ArrayList<TerrainOJ> terrains;
+
   Terrain()
   {
-   rect1 = new TerrainOJ(50,height-30,30,30,"rect"); 
-   tri1 = new TerrainOJ(175,height-50,140,-20,"lWedge");
-   tri2 = new TerrainOJ(316,height-50,80,-20,"rWedge");
+   terrains = new ArrayList<TerrainOJ>();
   }
   
  void updateTerrain(Player pl)
   {
    boolean isGrounded = false;
-   rect1.drawTerrain();
-   if(rect1.checkGrounding(pl) || tri1.checkGrounding(pl) || tri2.checkGrounding(pl))
-     isGrounded = true;
-   tri1.drawTerrain();
-   tri2.drawTerrain();
-   //tri1.checkGrounding(pl);
    
+   for(int ii = 0; ii<terrains.size(); ii++)
+   {
+    terrains.get(ii).drawTerrain();
+    if(terrains.get(ii).checkGrounding(pl))
+    {
+     isGrounded = true; 
+    }
+     
+   }
     
-      pl.isGrounded = isGrounded;
+    pl.isGrounded = isGrounded;
 
   }
  
@@ -191,7 +234,7 @@ class TerrainOJ
    {
     pl.body.ySpeed = 0;
    // pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight;
-    //pl.body.yPos = terrain.get(ii).yPos+4;//-pl.body.oHeight;
+   // pl.body.yPos +=1;// terrain.get(ii).yPos+4;//-pl.body.oHeight;
     //pl.isGrounded = false;
    // pl.isJumping = false;
     pl.jumpCounter = pl.jumpFrames/2;
@@ -242,19 +285,20 @@ class TerrainOJ
    {
     pl.body.xSpeed = 0;
    if(yCol!="bottom" && yCol!="top")
+   {
         pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth; 
-
+   }
    }
     else if(xCol == "right")
    {
     pl.body.xSpeed = 0;
-        if(yCol!="bottom" && rHeight>0)
+        if(yCol!="bottom" && rHeight>0 && (pl.isJumping ==false))
         {//yCol!="top" && yCol!="bottom"){
     pl.body.yPos -=1;//+terrain.get(ii+1).oHeight; 
       // terrain.get(ii).xPos;
       }
-    if(yCol!="top"&& yCol!="bottom"&& rHeight>0)//-pl.body.oWidth-2;
-     pl.body.xPos -=pl.runSpeed;
+   if(yCol!="top" && yCol!="bottom"&& rHeight>0)//-pl.body.oWidth-2; FIX!!!
+      pl.body.xPos -=pl.runSpeed;
    }
    }
    ////RIGHT WEDGE/////
@@ -263,7 +307,7 @@ class TerrainOJ
       if(xCol == "left")
            {
             pl.body.xSpeed = 0;
-           if(yCol!="bottom" && rHeight>0)
+           if(yCol!="bottom" && rHeight>0 && pl.isJumping==false) 
                pl.body.yPos -=1; 
             if(yCol!="top" && rHeight>0)
               pl.body.xPos=terrain.get(ii).xPos+terrain.get(ii).oWidth;
