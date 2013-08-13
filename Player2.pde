@@ -101,6 +101,10 @@ class Player
    body.ySpeed = fallSpeed; 
   }
    
+  
+    }
+        body.moveObject();
+
    if(body.yPos>height-body.oHeight)
         {
          body.yPos = height-body.oHeight;
@@ -108,9 +112,6 @@ class Player
          jumpCounter = 0;
          isJumping = false;
         } 
-    }
-  
-    body.moveObject();
 }
   
 }

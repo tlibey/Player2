@@ -219,131 +219,151 @@ class TerrainOJ
     int c = 0;
     boolean tempGround = false;
     int collisionBuffer = 20; //buffer to only examine collisions with objects within range of player
-    if(this.xPos<pl.body.xPos+pl.body.oWidth+20 && this.xPos+this.rWidth+10>pl.body.xPos-pl.body.oWidth)
+    if(this.xPos<=pl.body.xPos+pl.body.oWidth+20 && this.xPos+this.rWidth+10>=pl.body.xPos-pl.body.oWidth)
     {
    for(int ii = 0;ii<terrain.size();ii++)
    {
 
      String yCol = checkCollisionY(pl.body,terrain.get(ii));
      String xCol = checkCollisionX(pl.body,terrain.get(ii));
-     if(xCol!="" ||yCol!="")
-// println(xCol+" "+yCol);
- if(rHeight>0)
- {
-    if(yCol=="bottom")
-   {
-    pl.body.ySpeed = 0;
-   // pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight;
-   // pl.body.yPos +=1;// terrain.get(ii).yPos+4;//-pl.body.oHeight;
-    //pl.isGrounded = false;
-   // pl.isJumping = false;
-    pl.jumpCounter = pl.jumpFrames/2;
-    //pl.isJumping = false;
-    //pl.jumpCounter = 0;
-   } 
-   else if(yCol=="top")
-   {
-     pl.body.ySpeed = 0;
-    //pl.body.yPos ++;// terrain.get(ii).yPos-pl.body.oHeight;
-    tempGround = true;
-    pl.isJumping = false;
-    pl.jumpCounter = 0;
-   }
- }
- else if(rHeight<0)
- {
-       if(yCol=="bottom")
-   {
-    pl.body.ySpeed = 0;
-   // pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight;
-    pl.body.yPos ++;//= terrain.get(ii).yPos+4;//-pl.body.oHeight;
-    //pl.isGrounded = false;
-   // pl.isJumping = false;
-    pl.jumpCounter = pl.jumpFrames/2;
-    //pl.isJumping = false;
-    //pl.jumpCounter = 0;
-   } 
-   else if(yCol=="top")
-   {
-     pl.body.ySpeed = 0;
-    pl.body.yPos = terrain.get(ii).yPos-pl.body.oHeight;
-    tempGround = true;
-    pl.isJumping = false;
-    pl.jumpCounter = 0;
-   }
- }
- 
- 
-   //else if(yCol =="")
-   // {
-      //do nothing
-   // }
-   ////LEFT WEDGE/////
-   if(type == "lWedge")
-   {
-      if(xCol == "left")
-   {
-    pl.body.xSpeed = 0;
-   if(yCol!="bottom" && yCol!="top")
-   {
-        pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth; 
-   }
-   }
-    else if(xCol == "right")
-   {
-    pl.body.xSpeed = 0;
-        if(yCol!="bottom" && rHeight>0 && (pl.isJumping ==false))
-        {//yCol!="top" && yCol!="bottom"){
-    pl.body.yPos -=1;//+terrain.get(ii+1).oHeight; 
-      // terrain.get(ii).xPos;
+    String col = checkCollision4(pl.body,terrain.get(ii));
+      if(col != "")
+      {
+       println(col);
       }
-   if(yCol!="top" && yCol!="bottom"&& rHeight>0)//-pl.body.oWidth-2; FIX!!!
-      pl.body.xPos -=pl.runSpeed;
-   }
-   }
-   ////RIGHT WEDGE/////
-   else if(type == "rWedge")
-   {
-      if(xCol == "left")
-           {
-            pl.body.xSpeed = 0;
-           if(yCol!="bottom" && rHeight>0 && pl.isJumping==false) 
-               pl.body.yPos -=1; 
-            if(yCol!="top" && rHeight>0)
-              pl.body.xPos=terrain.get(ii).xPos+terrain.get(ii).oWidth;
-           }
-    else if(xCol == "right")
-         {
-          pl.body.xSpeed = 0;
-              if((yCol!="top" && rHeight<0 )|| (yCol!="bottom" && rHeight>0))
-              {
-         // pl.body.yPos -=1;//+terrain.get(ii+1).oHeight; //put slope here!!
-                pl.body.xPos = terrain.get(ii).xPos-pl.body.oWidth-2; 
-            }
-         }
-   }
-   else
-   {
-   if(xCol == "left")
-   {
-    pl.body.xSpeed = 0;
-    if(yCol!="bottom")
-    pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth+2; 
-   }
-    else if(xCol == "right")
-   {
-    pl.body.xSpeed = 0;
-        if(yCol!="bottom")
 
-    pl.body.xPos = terrain.get(ii).xPos-pl.body.oWidth-2; 
-   }
+          if(type == "rect")
+          {
+           if(col == "B" )//|| col == "BL")
+           {
+             pl.body.ySpeed = 0;
+             tempGround = true;
+             pl.isJumping = false;
+             pl.jumpCounter = 0;
+             pl.body.yPos = terrain.get(ii).yPos-pl.body.oHeight;
+           }
+           else if(col == "T")
+           {
+            pl.body.ySpeed = 0;
+            pl.jumpCounter = pl.jumpFrames/2;
+           }
+           else if(col == "TR" || col == "BR")
+           {
+             println("test");
+             pl.body.xSpeed = 0;
+            pl.body.xPos=terrain.get(ii).xPos-pl.body.oWidth-1; 
+           }
+           else if(col == "TL" || col == "BL")
+           {
+            pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth; 
+           }
+            
+          }
+          else if(((type == "lWedge" || type == "rWedge") && rHeight <0))
+          {
+             if(col == "B" || col == "BR" || col == "BL")//|| col == "BL")
+           {
+             pl.body.ySpeed = 0;
+             tempGround = true;
+             pl.isJumping = false;
+             pl.jumpCounter = 0;
+             pl.body.yPos = terrain.get(ii).yPos-pl.body.oHeight;
+           }
+           else if(col == "T" || col == "TR" || col == "TL")
+           {
+            pl.body.ySpeed = 0;
+            pl.jumpCounter = pl.jumpFrames/2;
+           }
+         
+          }
+        else if (type == "lWedge")
+        {
+                if(col == "B")
+                {
+                  pl.body.yPos--;
+                  tempGround = true;
+                  pl.isJumping = false;
+                  pl.jumpCounter = 0;
+                }
+                else if(col == "BR")
+                {
+                  pl.body.yPos--;
+                  //pl.body.xPos = terrain.get(ii).xPos;//-pl.body.oWidth-1;
+                  tempGround = true;
+                  pl.isJumping = false;
+                  pl.jumpCounter = 0;
+                }
+                else if(col == "BL")
+                {
+                 //not sure 
+                }
+                else if(col == "T" || col == "TR")
+                {
+                  pl.body.ySpeed = 0;
+                pl.jumpCounter = pl.jumpFrames/2;
+                 pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight+1; 
+                }
+                else if(col == "TL")
+                {
+                 pl.body.ySpeed = 0;
+                 pl.jumpCounter = pl.jumpFrames/2;
+                 //pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight+1;
+                 pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth+1;
+                 }
+             
+                
+                 
+               
+          
+           
+         } //end lWedge
+       else if (type == "rWedge")
+       {
+         if(col == "B")
+                {
+ pl.body.yPos= terrain.get(ii).yPos-pl.body.oHeight;
+                  //pl.body.xPos = terrain.get(ii).xPos;//-pl.body.oWidth-1;
+                  tempGround = true;
+                  pl.isJumping = false;
+                  pl.jumpCounter = 0;                }
+                else if(col == "BL")
+                {
+                  //pl.body.yPos--;
+                   pl.body.yPos= terrain.get(ii).yPos-pl.body.oHeight;
+
+                  //pl.body.xPos = terrain.get(ii).xPos;//-pl.body.oWidth-1;
+                  tempGround = true;
+                  pl.isJumping = false;
+                  pl.jumpCounter = 0;
+                }
+                else if(col == "BR")
+                {
+                 //not sure 
+                }
+                else if(col == "T" || col == "TL")
+                {
+                  pl.body.ySpeed = 0;
+                pl.jumpCounter = pl.jumpFrames/2;
+                 pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight+1; 
+                }
+                else if(col == "TR")
+                {
+                 pl.body.ySpeed = 0;
+                 pl.jumpCounter = pl.jumpFrames/2;
+                 //pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight+1;
+                 pl.body.xPos = terrain.get(ii).xPos-pl.body.oWidth;
+                 }
+       }// end rWedge
    
-   
-   }
-    }
-    }
-  return tempGround; //only change grounding if one was grounded
+    }//end for loop
+
+
+    } // end if statement
+      return tempGround; //only change grounding if one was grounded
+
+    } //end function
   
-  }
+  } //end terrainOJ class
   
-}
+  
+
