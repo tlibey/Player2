@@ -1,0 +1,113 @@
+/*
+if(rHeight>0)
+ {
+    if(yCol=="bottom")
+   {
+    pl.body.ySpeed = 0;
+   // pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight;
+   // pl.body.yPos +=1;// terrain.get(ii).yPos+4;//-pl.body.oHeight;
+    //pl.isGrounded = false;
+   // pl.isJumping = false;
+    pl.jumpCounter = pl.jumpFrames/2;
+    //pl.isJumping = false;
+    //pl.jumpCounter = 0;
+   } 
+   else if(yCol=="top")
+   {
+     pl.body.ySpeed = 0;
+    //pl.body.yPos ++;// terrain.get(ii).yPos-pl.body.oHeight;
+    tempGround = true;
+    pl.isJumping = false;
+    pl.jumpCounter = 0;
+   }
+ }
+ else if(rHeight<0)
+ {
+       if(yCol=="bottom")
+   {
+    pl.body.ySpeed = 0;
+   // pl.body.yPos = terrain.get(ii).yPos+terrain.get(ii).oHeight;
+    pl.body.yPos ++;//= terrain.get(ii).yPos+4;//-pl.body.oHeight;
+    //pl.isGrounded = false;
+   // pl.isJumping = false;
+    pl.jumpCounter = pl.jumpFrames/2;
+    //pl.isJumping = false;
+    //pl.jumpCounter = 0;
+   } 
+   else if(yCol=="top")
+   {
+     pl.body.ySpeed = 0;
+    pl.body.yPos = terrain.get(ii).yPos-pl.body.oHeight;
+    tempGround = true;
+    pl.isJumping = false;
+    pl.jumpCounter = 0;
+   }
+ }
+ 
+ 
+   //else if(yCol =="")
+   // {
+      //do nothing
+   // }
+   ////LEFT WEDGE/////
+   if(type == "lWedge")
+   {
+      if(xCol == "left")
+   {
+    pl.body.xSpeed = 0;
+   if(yCol!="bottom" && yCol!="top")
+   {
+        pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth; 
+   }
+   }
+    else if(xCol == "right")
+   {
+    pl.body.xSpeed = 0;
+        if(yCol!="bottom" && rHeight>0 && (pl.isJumping ==false))
+        {//yCol!="top" && yCol!="bottom"){
+    pl.body.yPos -=1;//+terrain.get(ii+1).oHeight; 
+      // terrain.get(ii).xPos;
+      }
+   if(yCol!="top" && yCol!="bottom"&& rHeight>0)//-pl.body.oWidth-2; FIX!!!
+      pl.body.xPos -=pl.runSpeed;
+   }
+   }
+   ////RIGHT WEDGE/////
+   else if(type == "rWedge")
+   {
+      if(xCol == "left")
+           {
+            pl.body.xSpeed = 0;
+           if(yCol!="bottom" && rHeight>0 && pl.isJumping==false) 
+               pl.body.yPos -=1; 
+            if(yCol!="top" && rHeight>0)
+              pl.body.xPos=terrain.get(ii).xPos+terrain.get(ii).oWidth;
+           }
+    else if(xCol == "right")
+         {
+          pl.body.xSpeed = 0;
+              if((yCol!="top" && rHeight<0 )|| (yCol!="bottom" && rHeight>0))
+              {
+         // pl.body.yPos -=1;//+terrain.get(ii+1).oHeight; //put slope here!!
+                pl.body.xPos = terrain.get(ii).xPos-pl.body.oWidth-2; 
+            }
+         }
+   }
+   else
+   {
+   if(xCol == "left")
+   {
+    pl.body.xSpeed = 0;
+    if(yCol!="bottom")
+    pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth+2; 
+   }
+    else if(xCol == "right")
+   {
+    pl.body.xSpeed = 0;
+        if(yCol!="bottom")
+
+    pl.body.xPos = terrain.get(ii).xPos-pl.body.oWidth-2; 
+   }
+   
+   
+   }*/

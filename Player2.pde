@@ -1,120 +1,97 @@
- Player p1;
-Terrain t1;
+
 boolean[] keys = new boolean[526];
+GameControl GC;
 
 void setup()
 {
- size(1000,300); 
- p1 = new Player();
- t1 = new Terrain();
- objectGenerator(t1);
+ size(1000,600); 
+ GC = new GameControl();
 }
 
 void draw()
 {
-  background(200,200,50);
-  fill(255);
-  
-  p1.updatePlayer();
-  t1.updateTerrain(p1);
+
+ GC.gameLoop();
+  //p1.body.drawObject();
 }
 
 
 
-class Player
+class GameControl
 {
-  int xPos;
-  int yPos;
-  int xVel;
-  int yVel;
-  int pWidth = 30;
-  int pHeight = 30;
-  drawableObject body;
-  boolean isJumping = false;
-  int jumpCounter = 0;
-  boolean isGrounded = true;
-  int jumpFrames = 70;
-  int jumpSpeed = 5; //needs to be set with terrain objects in mind
-  int fallSpeed = 5;
-  int runSpeed = 5;
+ 
+ boolean inGame = false;
+boolean inPlayerMenu = false;
+boolean inStartMenu = true;
+PFont font;
+ Player p1;
+ Level l1;
+ 
+ 
+GameControl()
+{
+ p1 = new Player();
+ l1 = new Level(); 
+    font = createFont("Arial",16,true);
 
-  
-  Player()
-  {
-    xPos = 0;
-    yPos = height-pHeight;
-    xVel = 0;
-    yVel = 0;
-    body = new drawableObject(xPos,yPos,xVel,yVel,"rect",pWidth,pHeight);
-  }
-  
-  void updatePlayer()
-  {
-    movePlayer(); 
-    body.drawObject();  
-   }
-  
-  
-  void movePlayer()
-  {
-   if(checkKey('D'))
-  {
-   body.xSpeed = runSpeed;
-  } 
-  else if(checkKey('A'))
-  {
-   body.xSpeed = -runSpeed; 
-  }
-  else //if()!isJumping)
-  {
-   body.xSpeed = 0; 
-  }
-  if (checkKey(' ') && !isJumping && (isGrounded || body.yPos>=height-body.oHeight))
-  {
-   isJumping = true; 
-   isGrounded = false;
-   jumpCounter = 0;
-  }
-  
-  if(!isGrounded)
-  {
-  if(isJumping)
-  {
-    if(jumpCounter>=jumpFrames)
-    {
-     body.ySpeed = 0; 
-     isJumping = false;
-     isGrounded = true;
-    }
-    else if(jumpCounter>=jumpFrames/2)
-    {
-     body.ySpeed =jumpSpeed; 
-    }
-    else if(jumpCounter>=0)
-    {
-     body.ySpeed = -jumpSpeed; 
-    }
-    jumpCounter++;
-  }
-  else if(!isJumping)
-  {
-   body.ySpeed = fallSpeed; 
-  }
+}
+ 
+ void gameLoop()
+ {
+  if(inGame)
+ {
+    background(200,200,50);
+  fill(255);
+ // translate(l1.xTrans, l1.yTrans);
+        l1.updateBackground();
+
+    p1.updatePlayer();
+
+  l1.updateLevel(p1);
+  displayHUD();
+ } 
+ else if(inStartMenu)
+ {
+  displayStartMenu(); 
    
+ }
+ 
+ else if(inPlayerMenu)
+ {
+   
+ }
+   
+   
+ }
+ 
+ void displayStartMenu()
+ {
+   background(255);
+  if(checkKey(ENTER))
+  {
+    inStartMenu = false;
+    inGame = true;
+  }
+  l1.updateBackground();
+  textFont(font,30);
+  //text("Welcome!!",width/2 - 100,50);
+  fill(0);
+  textAlign(CENTER);
+  text("press ENTER to start", width/2, 150);
+   
+   
+ }
+ void displayHUD()
+ {
+  fill(0);
+  textFont(font,30);
+  textAlign(CENTER);
+  text("Health:  "+ p1.currentHealth,width/2,30);
+   
+   
+ }
+ 
   
-    }
-        body.moveObject();
-
-   if(body.yPos>height-body.oHeight)
-        {
-         body.yPos = height-body.oHeight;
-         isGrounded = true;
-         jumpCounter = 0;
-         isJumping = false;
-        } 
 }
-  
-}
-
 
 

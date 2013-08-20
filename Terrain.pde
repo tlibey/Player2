@@ -1,45 +1,5 @@
-void objectGenerator(Terrain t1) //add Enemies e1
-{
-  int scaleFactor = 30;
- Table level = loadTable("levelTest.csv");
-  for(int ii = 0; ii<level.getRowCount(); ii ++)
-    for(int jj = 0; jj <level.getColumnCount();jj++)
-    {
-      int val = level.getInt(ii,jj);
-     if(val!=0)
-      {
-        String v1 = ""+val;
-        if(v1.charAt(0) == '6')
-        {
-        // String im = v1.charAt(5)+v1.charAt(6);
-         int h = int(v1.charAt(3)+""+v1.charAt(4));
-         int w = int(v1.charAt(1)+""+v1.charAt(2));
-         t1.terrains.add(new TerrainOJ(jj*scaleFactor,ii*scaleFactor,w,h,"lWedge"));
-        }
-          else if(v1.charAt(0) == '7')
-        {
-         int h = int(v1.charAt(3)+""+v1.charAt(4));
-         int w = int(v1.charAt(1)+""+v1.charAt(2));
-         t1.terrains.add(new TerrainOJ(jj*scaleFactor,ii*scaleFactor,w,h,"rWedge"));
-        }
-        else if(v1.charAt(0) == '8')
-        {
-         int h = int(v1.charAt(3)+""+v1.charAt(4));
-         int w = int(v1.charAt(1)+""+v1.charAt(2));
-         t1.terrains.add(new TerrainOJ(jj*scaleFactor,ii*scaleFactor,w,h,"rect"));
-        }
-        
-      }
-    }
-  
-   t1.terrains.add(new TerrainOJ(50,height-30,30,30,"rect")); // 8
-   t1.terrains.add(new TerrainOJ(175,height-50,140,-20,"lWedge"));
-   t1.terrains.add(new TerrainOJ(316,height-50,80,-20,"rWedge"));
-   t1.terrains.add(new TerrainOJ(516,height-50,80,20,"rWedge"));
-  
-  
-  
-}
+
+
 
 class Terrain
 {
@@ -51,22 +11,47 @@ class Terrain
    terrains = new ArrayList<TerrainOJ>();
   }
   
- void updateTerrain(Player pl)
+ void updateTerrain(Player pl, Enemies e1)
   {
-   boolean isGrounded = false;
-   
+   boolean isGroundedP = false;
+   boolean[] isGroundedE = new boolean[e1.enemies.size()];
    for(int ii = 0; ii<terrains.size(); ii++)
    {
     terrains.get(ii).drawTerrain();
     if(terrains.get(ii).checkGrounding(pl))
     {
-     isGrounded = true; 
+     isGroundedP = true; 
+    }
+    for(int jj = 0; jj<e1.enemies.size();jj++)
+    {
+     if(terrains.get(ii).checkGrounding(e1.enemies.get(jj))) 
+     {
+      isGroundedE[jj] = true; 
+     }
+     
     }
      
    }
     
-    pl.isGrounded = isGrounded;
+    pl.isGrounded = isGroundedP;
 
+    for(int jj = 0; jj<e1.enemies.size();jj++)
+      {
+         e1.enemies.get(jj).isGrounded  = isGroundedE[jj];         
+      } 
+  }
+  void moveTerrain(int x, int y)
+  {
+    for(int ii = 0; ii<terrains.size(); ii++)
+   {
+    terrains.get(ii).xPos+=x;
+    terrains.get(ii).yPos+=y;
+    terrains.get(ii).moveTerrainObject(x,y);
+   }
+  }
+  void addBorders(int w, int h)
+  {
+    terrains.add(new TerrainOJ(0,-h+height,w,h,"border"));
   }
  
   
@@ -103,13 +88,22 @@ class TerrainOJ
    type = t;
    generateTerainObject(); 
   }
-  
+  void moveTerrainObject(int x, int y)
+  {
+    for(int ii = 0; ii <terrain.size(); ii++)
+   {
+     
+     terrain.get(ii).xPos +=x;
+     terrain.get(ii).yPos +=y; 
+     
+   }
+    
+  }
   void generateTerainObject()
   {
    if(type == "rect")
    {
-     rHeight = 20;
-     rWidth = 40;
+     
      int lineWidth = 2;
      terrain.add(new drawableObject(xPos,yPos,0,0,"rect",rWidth,lineWidth)); //topBound
      terrain.add(new drawableObject(xPos,yPos+rHeight,0,0,"rect",rWidth,lineWidth)); //bottomBound
@@ -156,6 +150,16 @@ class TerrainOJ
        }
      }
     }
+    else if(type == "border")
+    {
+     
+      terrain.add(new drawableObject(xPos,yPos,0,0,"rect",rWidth,1));
+      terrain.add(new drawableObject(xPos,yPos,0,0,"rect",1,rHeight));
+      terrain.add(new drawableObject(xPos,yPos+rHeight,0,0,"rect",rWidth,1));
+      terrain.add(new drawableObject(xPos+rWidth,yPos,0,0,"rect",1,rHeight));
+      
+    }
+   
    
     
   }
@@ -164,12 +168,12 @@ class TerrainOJ
   {
     //draw lines
     
-   for(int ii = 0; ii <terrain.size(); ii++)
-   {
-     fill(255);
+   //for(int ii = 0; ii <terrain.size(); ii++)
+  // {
+  //   fill(255);
      //terrain.get(ii).moveObject(); TO implement
-    terrain.get(ii).drawObject(); 
-   }
+  //  terrain.get(ii).drawObject(); 
+//   }
    if(type == "rect")
    {
      fill(25,50,250);
@@ -214,24 +218,63 @@ class TerrainOJ
     
   }
   
+  boolean checkGrounding(Enemy en)
+  {
+    boolean tempGround = false;
+    
+    //int collisionBuffer = 20; //buffer to only examine collisions with objects within range of player ///UNUSED??
+  
+  for(int ii = 0; ii<terrain.size(); ii++)
+  {
+    String col = checkCollision4(en.ebody,terrain.get(ii));
+    if(type == "rect" || ((type == "lWedge" || type == "rWedge") && rHeight <0))
+    {
+        if(col == "B")
+        {
+         tempGround = true;
+         en.ebody.yPos = terrain.get(ii).yPos-en.ebody.oHeight; 
+        }
+        else if(col == "TL" || col == "BL" || col == "TR" || col == "BR")
+        {
+          en.ebody.xSpeed *= -1;
+        }       
+    }
+    else //rwedge ** lwedge
+    {
+           if(col == "BL" || col == "BR" || col == "B")
+        {
+         tempGround = true;
+         en.ebody.yPos = terrain.get(ii).yPos-en.ebody.oHeight; 
+        }
+    }
+  }
+    return tempGround;
+    
+  }
+  
   boolean checkGrounding(Player pl)
   {
     int c = 0;
     boolean tempGround = false;
     int collisionBuffer = 20; //buffer to only examine collisions with objects within range of player
-    if(this.xPos<=pl.body.xPos+pl.body.oWidth+20 && this.xPos+this.rWidth+10>=pl.body.xPos-pl.body.oWidth)
+    if(this.xPos<=pl.body.xPos+pl.body.oWidth+collisionBuffer && this.xPos+this.rWidth+collisionBuffer>=pl.body.xPos-pl.body.oWidth)
     {
    for(int ii = 0;ii<terrain.size();ii++)
    {
 
-     String yCol = checkCollisionY(pl.body,terrain.get(ii));
-     String xCol = checkCollisionX(pl.body,terrain.get(ii));
+     
     String col = checkCollision4(pl.body,terrain.get(ii));
-      if(col != "")
-      {
-       println(col);
-      }
-
+    if((type == "rWedge" && col == "BL") ||( type == "lWedge" && col =="BR"))
+    {
+                       pl.onWedge = true;
+ 
+    }
+    else //if(col!="")
+     {
+      pl.onWedge = false; 
+     }
+    //if(col != "")
+    //  println(col);
           if(type == "rect")
           {
            if(col == "B" )//|| col == "BL")
@@ -247,15 +290,30 @@ class TerrainOJ
             pl.body.ySpeed = 0;
             pl.jumpCounter = pl.jumpFrames/2;
            }
-           else if(col == "TR" || col == "BR")
+           else if(col == "TR")
            {
-             println("test");
              pl.body.xSpeed = 0;
             pl.body.xPos=terrain.get(ii).xPos-pl.body.oWidth-1; 
            }
-           else if(col == "TL" || col == "BL")
+           else if(col == "BR")
+           {
+            if(ii !=0)
+           {
+              pl.body.xSpeed = 0;
+            pl.body.xPos=terrain.get(ii).xPos-pl.body.oWidth-1;
+           } 
+           }
+           else if(col == "TL")
            {
             pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth; 
+           }
+           else if( col == "BL")
+           {
+            if( ii != 0)
+           {
+               pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth; 
+
+           } 
            }
             
           }
@@ -287,7 +345,12 @@ class TerrainOJ
                 }
                 else if(col == "BR")
                 {
-                  pl.body.yPos--;
+                  if(pl.body.yPos<=yMargin+10 || pl.body.yPos>=height-yMargin)
+                  {
+                   pl.body.ySpeed--; 
+                  }
+                  else
+                   pl.body.yPos--;
                   //pl.body.xPos = terrain.get(ii).xPos;//-pl.body.oWidth-1;
                   tempGround = true;
                   pl.isJumping = false;
@@ -328,10 +391,13 @@ class TerrainOJ
                   pl.jumpCounter = 0;                }
                 else if(col == "BL")
                 {
-                  //pl.body.yPos--;
-                   pl.body.yPos= terrain.get(ii).yPos-pl.body.oHeight;
-
-                  //pl.body.xPos = terrain.get(ii).xPos;//-pl.body.oWidth-1;
+                  //pl.body.yPos-= 2;
+                  // pl.body.yPos= terrain.get(ii).yPos-pl.body.oHeight;
+                  if(pl.body.yPos<=yMargin+5 || pl.body.yPos>=height-yMargin)
+                      pl.body.ySpeed--;
+                      else
+                      pl.body.yPos = pl.body.yPos= terrain.get(ii).yPos-pl.body.oHeight;
+                  //pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth-1;//-pl.body.oWidth-1;
                   tempGround = true;
                   pl.isJumping = false;
                   pl.jumpCounter = 0;
@@ -340,6 +406,7 @@ class TerrainOJ
                 {
                  //not sure 
                 }
+               
                 else if(col == "T" || col == "TL")
                 {
                   pl.body.ySpeed = 0;
@@ -354,7 +421,42 @@ class TerrainOJ
                  pl.body.xPos = terrain.get(ii).xPos-pl.body.oWidth;
                  }
        }// end rWedge
-   
+    else if(type == "border")
+    {
+      
+     col = checkCollision5(pl.body,terrain.get(ii));
+    
+     if(col == "B" && ii == 2)//|| col == "BL")
+           {
+            pl.body.ySpeed = 0;
+           tempGround = true;
+           pl.isJumping = false;
+           pl.jumpCounter = 0;
+           pl.body.yPos = terrain.get(ii).yPos-pl.body.oHeight;
+           }
+           else if(col == "T" && ii == 0)
+           {
+            pl.body.ySpeed = 0;
+            pl.jumpCounter = pl.jumpFrames/2;
+            pl.body.yPos = terrain.get(ii).yPos+ terrain.get(ii).oHeight+15;
+           }
+           else if(col == "L" && ii == 1)
+           {
+            pl.body.xSpeed = 0;
+            
+            pl.body.xPos = terrain.get(ii).xPos+terrain.get(ii).oWidth+10;
+           }
+            else if(col == "R" && ii == 3)
+           {
+            pl.body.xSpeed = 0;
+            pl.body.xPos = terrain.get(ii).xPos - pl.body.oWidth-10;
+           }
+          
+            
+          
+         
+      
+    }
     }//end for loop
 
 

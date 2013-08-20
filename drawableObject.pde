@@ -77,10 +77,21 @@ class drawableObject
     fill(0);
    rect(xPos,yPos,oWidth,oHeight); 
   }
-  else{
+  else if(type == "bomb")
+  {
+    fill(255,0,0);
+       rect(xPos,yPos,oWidth,oHeight); 
+
+  }
+  else if(type == "health")
+  {
+    fill(0,255,0);
+       rect(xPos,yPos,oWidth,oHeight); 
+
   }
   
  }
+ 
  
  void moveObject()
  {
