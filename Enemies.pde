@@ -115,7 +115,7 @@ class Enemy
  
  void handleType(Player pl)
  {
-   
+   //move to xaml formatted file?? 
    //handleALL AI here!
     if(type == 0 && pl.body.xPos != ebody.xPos) //homing
       {
@@ -133,8 +133,10 @@ class Enemy
    }
    if(type == 2)
    {
+     if(pl.body.xPos != ebody.xPos)
+     {
             ebody.xSpeed = (-ebody.xPos+pl.body.xPos)/abs(ebody.xPos-pl.body.xPos)*1; 
-
+     }
      if(!isGrounded)
            ebody.ySpeed = 3;
           else if(isGrounded)

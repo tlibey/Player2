@@ -1,3 +1,5 @@
+//needs to be commented
+
 
 boolean[] keys = new boolean[526];
 GameControl GC;
@@ -49,6 +51,12 @@ GameControl()
 
   l1.updateLevel(p1);
   displayHUD();
+        if(checkKey('P'))
+     {
+      inPlayerMenu = true;
+      inGame = false;
+      inStartMenu = false;
+     }
  } 
  else if(inStartMenu)
  {
@@ -58,9 +66,21 @@ GameControl()
  
  else if(inPlayerMenu)
  {
+  background(255);
+  if(checkKey(ENTER))
+  {
+    inStartMenu = false;
+    inPlayerMenu = false;
+    inGame = true;
+  }
+  textFont(font,30);
+  //text("Welcome!!",width/2 - 100,50);
+  fill(0);
+  textAlign(CENTER);
+  text("press ENTER to resume", width/2, 150);
    
  }
-   
+
    
  }
  
