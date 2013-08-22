@@ -11,6 +11,8 @@ tmp/
 *.bak
 *.swp
 *~.nib
+*.mp3
+*.wav
 local.properties
 .classpath
 .settings/
