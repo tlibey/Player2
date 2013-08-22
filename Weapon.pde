@@ -13,7 +13,7 @@ class Weapon
  int weaponWidth;
   int weaponHeight;
  int weaponDir; //1facing left, 2 facing right
- 
+ PImage thisImage;
  Weapon()
  {
   weapon = new drawableObject(0,0,0,0,"");
@@ -28,7 +28,9 @@ class Weapon
     ammoSpeed = 10;
      weaponDir = -1;
    weaponType = wT;
-   weapon = new drawableObject(x,y,0,0,"rect"); 
+   weapon = new drawableObject(x,y,0,0,weaponType); 
+    if(wT == "gun")
+    thisImage = loadImage("player/pWeapon1.png");
  }
  Weapon(int x, int y, String wT, int wW, int wH, color wC, int aSi, int aSp,  color aC, int aL)
  {
@@ -53,7 +55,8 @@ class Weapon
   weapon.drawObject(); 
  }
  void updateWeapon(Player pl)
- {
+ {     weapon.yPos = pl.body.yPos+pl.body.oHeight/3;
+
      if(pl.body.xSpeed>0)
      {
       weaponDir = 1; 
@@ -63,18 +66,27 @@ class Weapon
       weaponDir = -1; 
      }
      if(weaponDir == 1)
+     {
          weapon.xPos = pl.body.xPos+pl.body.oWidth;
+                  copy(thisImage,thisImage.width,0,-thisImage.width,thisImage.height,weapon.xPos,weapon.yPos,thisImage.width,thisImage.height); 
+
+   
+     }
      else
+     {
          weapon.xPos = pl.body.xPos-weapon.oWidth;
-     weapon.yPos = pl.body.yPos;
+              image(thisImage,weapon.xPos,weapon.yPos,thisImage.width,thisImage.height); 
+     }
      this.updateAmmo();
 
-  weapon.drawObject(); 
+    
+      
+      
  }
  
  void use()
  {
-   int x = weapon.xPos+weapon.oWidth;
+   int x = weapon.xPos+weapon.oWidth*weaponDir;
    int y = weapon.yPos;
    if(ammo.size()<ammoLim)
      ammo.add(new drawableObject(x,y,weaponDir*ammoSpeed,0,"rect",ammoSize,ammoSize,ammoColor));

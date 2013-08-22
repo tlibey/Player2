@@ -139,21 +139,24 @@ int yEnd = constrain(yStarted+4*(height/scaleFactor),0,level.getRowCount());
         // String im = v1.charAt(5)+v1.charAt(6);
          int h = int(v1.charAt(3)+""+v1.charAt(4));
          int w = int(v1.charAt(1)+""+v1.charAt(2));
-         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"lWedge"));
+         int imgIndex = int(v1.charAt(5)+""+v1.charAt(6));
+         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"lWedge",imgIndex));
 
         }
           else if(v1.charAt(0) == '7')
         {
          int h = int(v1.charAt(3)+""+v1.charAt(4));
          int w = int(v1.charAt(1)+""+v1.charAt(2));
-         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"rWedge"));
+         int imgIndex = int(v1.charAt(5)+""+v1.charAt(6));
+         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"rWedge",imgIndex));
 
         }
         else if(v1.charAt(0) == '8')
         {
          int h = int(v1.charAt(3)+""+v1.charAt(4));
          int w = int(v1.charAt(1)+""+v1.charAt(2));
-         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor+yTrans-yStart,w,h,"rect"));
+         int imgIndex = int(v1.charAt(5)+""+v1.charAt(6));
+         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor+yTrans-yStart,w,h,"rect",imgIndex));
         }
         else if(v1.charAt(0) == '5' && !generatedEns[ii][jj])
         {

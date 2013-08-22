@@ -1,7 +1,7 @@
 
 
 
-class Terrain
+class Terrain 
 {
   
     ArrayList<TerrainOJ> terrains;
@@ -65,7 +65,8 @@ class TerrainOJ
   int rHeight;
   int rWidth;
   String type;
-  
+  int imgIndex = 0;
+  TerrainOJImgs tims = new TerrainOJImgs();
  /*TerrainOJ()
   {
    terrain.add(new drawableObject(50,height-40,0,0,"rect",50,2)); 
@@ -86,6 +87,16 @@ class TerrainOJ
    rHeight = h;
    rWidth = w;
    type = t;
+   generateTerainObject(); 
+  }
+    TerrainOJ(int x, int y, int w, int h, String t,int im)
+  {
+   xPos = x;
+   yPos = y;
+   rHeight = h;
+   rWidth = w;
+   type = t;
+   imgIndex = im;
    generateTerainObject(); 
   }
   void moveTerrainObject(int x, int y)
@@ -174,10 +185,21 @@ class TerrainOJ
      //terrain.get(ii).moveObject(); TO implement
   //  terrain.get(ii).drawObject(); 
 //   }
-   if(type == "rect")
+    if(type == "rect" && imgIndex == 1)
+    {
+      copy(tims.im1,0,0,tims.im1.width,tims.im1.height,xPos,yPos,rWidth,rHeight);
+      
+    }
+   else if(type == "rect")
    {
      fill(25,50,250);
      rect(xPos,yPos,rWidth,rHeight);
+   }
+   else if(type == "lWedge" && rHeight>0 && imgIndex == 1)
+   {
+     
+    copy(tims.im2,0,0,tims.im2.width,tims.im2.height,xPos,yPos-rHeight,rWidth,rHeight);
+
    }
    else if(type == "lWedge" && rHeight>0)
    {
@@ -465,7 +487,9 @@ class TerrainOJ
 
     } //end function
   
+ 
   } //end terrainOJ class
   
   
+ 
 

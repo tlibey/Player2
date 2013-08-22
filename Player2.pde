@@ -1,5 +1,13 @@
 //needs to be commented
+//toDO
+/*
+organize weapons and playerSprites to better load in images/types
+    mainly change how each object is drawn (draw outside drawableObject? - 
+    have own drawFunctions which only load relevant images)
+    
 
+
+*/
 
 boolean[] keys = new boolean[526];
 GameControl GC;

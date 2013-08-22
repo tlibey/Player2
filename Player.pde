@@ -4,8 +4,8 @@ class Player
   int yPos;
   int xVel;
   int yVel;
-  int pWidth = 30;
-  int pHeight = 30;
+  int pWidth = 20;
+  int pHeight = 44;
   drawableObject body;
   boolean isJumping = false;
   int jumpCounter = 0;
@@ -18,11 +18,15 @@ class Player
  int yMargin = 10;
  int totalHealth = 100;
  int currentHealth = 100;
+ int spriteCounter = 0;
   int yStart;
+  int facing = 1;
+  PImage pImage;
   Weapon pWeapon;
   
   Player()
   {
+    pImage = loadImage("player/player1walk.png"); //based on level
     xPos = 0;
     yStart = height-pHeight-30;
     yPos = yStart;
@@ -30,12 +34,13 @@ class Player
     yVel = 0;
     body = new drawableObject(xPos,yPos,xVel,yVel,"rect",pWidth,pHeight);
     pWeapon = new Weapon(xPos,yPos,"gun");
+
   }
   
   void updatePlayer()
   {
     movePlayer(); 
-    body.drawObject();
+    drawPlayer();
     pWeapon.updateWeapon(this); 
    if(mousePressed)
   {
@@ -121,5 +126,28 @@ class Player
  }
  
  } 
+   void drawPlayer()
+  {
+    if(body.xSpeed <0)
+    {
+       facing = 1;
+       spriteCounter++;
+
+    }
+    else if(body.xSpeed>0)
+    {
+      facing = -1;
+      spriteCounter++;
+    }
+    if(spriteCounter>=15)
+      spriteCounter = 0;
+      
+      int index = spriteCounter/5;
+      if(facing<0)
+        copy(pImage,index*pWidth+pWidth,0,-pWidth,pHeight,body.xPos,body.yPos,pWidth,pHeight);
+        else
+          copy(pImage,index*pWidth,0,pWidth,pHeight,body.xPos,body.yPos,pWidth,pHeight);
+    
+  }
 }
 

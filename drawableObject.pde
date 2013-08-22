@@ -8,6 +8,7 @@ class drawableObject
  int oWidth;
  int oHeight;
  int fillColor; 
+ PImage thisImage;
  
  drawableObject()
  {
@@ -30,6 +31,7 @@ class drawableObject
   type = stype; 
   oWidth = 20;
   oHeight = 20; 
+ 
  }
  
  drawableObject(int x, int y, int xS, int yS, String stype, int w, int h)
@@ -89,6 +91,7 @@ class drawableObject
        rect(xPos,yPos,oWidth,oHeight); 
 
   }
+  
   
  }
  
