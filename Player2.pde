@@ -5,6 +5,7 @@ organize weapons and playerSprites to better load in images/types
     mainly change how each object is drawn (draw outside drawableObject? - 
     have own drawFunctions which only load relevant images)
     
+draw rectangles up like the wedges
 
 
 */
@@ -16,6 +17,7 @@ void setup()
 {
  size(1000,600); 
  GC = new GameControl();
+ initializeSound(); //move to class?
 }
 
 void draw()
@@ -23,6 +25,11 @@ void draw()
 
  GC.gameLoop();
   //p1.body.drawObject();
+}
+
+void stop()
+{
+ stopSound(); 
 }
 
 
@@ -43,13 +50,16 @@ GameControl()
  p1 = new Player();
  l1 = new Level(); 
     font = createFont("Arial",16,true);
-
+ 
 }
  
  void gameLoop()
  {
   if(inGame)
  {
+   if(!mainTheme.isPlaying())
+         mainTheme.play();
+
     background(200,200,50);
   fill(255);
  // translate(l1.xTrans, l1.yTrans);
@@ -68,12 +78,15 @@ GameControl()
  } 
  else if(inStartMenu)
  {
+   mainTheme.pause();
   displayStartMenu(); 
    
  }
  
  else if(inPlayerMenu)
  {
+      mainTheme.pause();
+
   background(255);
   if(checkKey(ENTER))
   {

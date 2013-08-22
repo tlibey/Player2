@@ -89,8 +89,9 @@ class Weapon
    int x = weapon.xPos+weapon.oWidth*weaponDir;
    int y = weapon.yPos;
    if(ammo.size()<ammoLim)
-     ammo.add(new drawableObject(x,y,weaponDir*ammoSpeed,0,"rect",ammoSize,ammoSize,ammoColor));
-   
+     {ammo.add(new drawableObject(x,y,weaponDir*ammoSpeed,0,"rect",ammoSize,ammoSize,ammoColor));
+     playSound("sound1");
+     }
  }
  
  void updateAmmo()

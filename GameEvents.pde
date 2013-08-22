@@ -34,7 +34,8 @@ void checkHitsAndPickups(Enemies ens, Player pl)
     if(checkCollision(temp,en.ebody))
      {
        pl.pWeapon.ammo.remove(ii);
-         en.currentHealth -= 10;       
+         en.currentHealth -= 10;  
+    playSound("sound2");     
      }
      if(en.currentHealth<=0)
        hit=true;
