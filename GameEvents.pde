@@ -1,3 +1,10 @@
+void showExplosion(int x, int y)
+{
+  fill(255,0,0);
+  rect(x,y,30,30);
+  
+}
+
 void checkHitsAndPickups(Enemies ens, Player pl)
 {
  if(ens.enemies.size()>0)
@@ -12,6 +19,7 @@ void checkHitsAndPickups(Enemies ens, Player pl)
                  ens.eLoot.add(new Loot(thisLoot,en.ebody.xPos,en.ebody.yPos));
                 //add scoring?
                  ens.enemies.remove(jj); 
+                 playSound("sound3");
                }
               if(checkPlayerHit(en,pl))
               {
@@ -42,6 +50,8 @@ void checkHitsAndPickups(Enemies ens, Player pl)
    }
      
     }
+    if(en.currentHealth<=0)
+      hit = true;
     return hit;
   }
   

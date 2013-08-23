@@ -179,12 +179,12 @@ class TerrainOJ
   {
     //draw lines
     
-   //for(int ii = 0; ii <terrain.size(); ii++)
-  // {
-  //   fill(255);
-     //terrain.get(ii).moveObject(); TO implement
-  //  terrain.get(ii).drawObject(); 
-//   }
+   for(int ii = 0; ii <terrain.size(); ii++)
+   {
+     fill(255);
+    // terrain.get(ii).moveObject();// TO implement
+    terrain.get(ii).drawObject(); 
+  }
     if(type == "rect" && imgIndex == 1)
     {
       copy(tims.im1,0,0,tims.im1.width,tims.im1.height,xPos,yPos,rWidth,rHeight);

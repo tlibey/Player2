@@ -1,7 +1,7 @@
 String currentLevel = "stressTest.csv";
 int scaleFactor = 30;
 int yMargin = 60;
-int xMargin = 100;
+int xMargin = 200;
 class Level
 {
   //String currentLevel = "levelTest.csv";

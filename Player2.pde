@@ -57,8 +57,8 @@ GameControl()
  {
   if(inGame)
  {
-   if(!mainTheme.isPlaying())
-         mainTheme.play();
+  if(!mainTheme.isPlaying())
+mainTheme.play();
 
     background(200,200,50);
   fill(255);

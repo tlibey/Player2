@@ -103,6 +103,12 @@ class Enemy
      eWidth = 10;
      totalHealth = 400;
    }
+   if(type == 3)
+   {
+    eHeight = 10;
+    eWidth = 50;
+    totalHealth =400; 
+   }
   //assign type characteristics 
  }
  
@@ -143,6 +149,29 @@ class Enemy
          {
           ebody.ySpeed = 0;
          } 
+   }
+   else if(type == 3)
+   {
+      if(pl.body.xPos != ebody.xPos)
+     {
+            ebody.xSpeed = (-ebody.xPos+pl.body.xPos)/abs(ebody.xPos-pl.body.xPos)*1; 
+     }
+     if(!isGrounded)
+           ebody.ySpeed = 1;
+          else if(isGrounded)
+         {
+          ebody.ySpeed = 0;
+         } 
+     if(frameCount % 10==0)
+     {
+      ebody.yPos += -5; 
+     }
+     if(checkCollision(pl.body,ebody))
+     {
+      currentHealth = 0;
+      pl.currentHealth-=80;
+      showExplosion(pl.body.xPos,pl.body.yPos); 
+     }
    }
    
    
