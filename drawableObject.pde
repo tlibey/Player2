@@ -9,6 +9,9 @@ class drawableObject
  int oHeight;
  int fillColor; 
  PImage thisImage;
+ int currentAnimatedFrame = 0;
+ int totalAnimatedFrames = 0;
+ int spriteID = 000;
  
  drawableObject()
  {

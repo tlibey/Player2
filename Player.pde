@@ -33,7 +33,7 @@ class Player
     xVel = 0;
     yVel = 0;
     body = new drawableObject(xPos,yPos,xVel,yVel,"rect",pWidth,pHeight);
-    pWeapon = new Weapon(xPos,yPos,"gun");
+    pWeapon = new Weapon(xPos,yPos,"gun","guna");
 
   }
   

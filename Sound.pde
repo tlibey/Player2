@@ -28,16 +28,18 @@ void initializeSound()
 
 void playSound(String type)
 {
- if(type == "sound1")
+  
+  
+ if(type == "playerShoot")
  {
    sound1.trigger();
  }
  
-else if (type == "sound2")
+else if (type == "enemyHit")
 {
   sound2.trigger();
 }
-else if(type == "sound3")
+else if(type == "enemyDeath")
 {
   sound3.trigger();
 }

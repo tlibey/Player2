@@ -7,46 +7,58 @@ class Weapon
  int ammoSize;
  color ammoColor;
  int ammoLim;
- int ammoSpeed;
+ int ammoSpeedX;
+ int ammoSpeedY;
+ String ammoType;
  String weaponType;
  color weaponColor;
  int weaponWidth;
   int weaponHeight;
  int weaponDir; //1facing left, 2 facing right
  PImage thisImage;
+ PImage ammoImage;
+ String thisSound;
  Weapon()
  {
   weapon = new drawableObject(0,0,0,0,"");
  }
- Weapon(int x, int y, String wT)
+ Weapon(int x, int y, String wT, String aT)
  {
+     ammoImage = findSprite(aT);
+   thisImage = findSprite(wT);
+   ammoType = aT;
+   weaponType = wT;
+   generateWeapon();
    xPos = x;
    yPos = y;
-    ammoSize = 5;
-    ammoColor = color(60,50,255);
-    ammoLim = 20;
-    ammoSpeed = 10;
-     weaponDir = -1;
-   weaponType = wT;
    weapon = new drawableObject(x,y,0,0,weaponType); 
-    if(wT == "gun")
-    thisImage = loadImage("player/pWeapon1.png");
- }
- Weapon(int x, int y, String wT, int wW, int wH, color wC, int aSi, int aSp,  color aC, int aL)
+ 
+     }
+ 
+ //// WEAPON GENERATION SECION!!!
+ void generateWeapon()
  {
-  xPos = x;
-  yPos = y;
-  ammoSize = aSi;
-  ammoColor = aC;
-  ammoSpeed = aSp;
-  ammoLim =aL;
-  weaponType = wT;
-  weaponColor = wC;
-  weaponWidth = wW;
-  weaponHeight = wH;
-  weapon = new drawableObject(x,y,0,0,wT,wW,wH,wC); 
+  if(ammoType == "guna")
+  {
+    ammoSize = ammoImage.height;
+    ammoColor = color(60,50,255); //not used
+
+    
+    
+  }
+  if(weaponType == "gun")
+  {
+    ammoLim = 20;
+    ammoSpeedX = 10;
+    ammoSpeedY = 0;
+    weaponDir = -1;
+   thisSound = "playerShoot";
+  }
+  
    
  }
+ ///END WEAPON GENERATION!!!
+ 
  void updateWeapon(int x, int y)
  {
    
@@ -54,6 +66,7 @@ class Weapon
   weapon.yPos = y;
   weapon.drawObject(); 
  }
+ 
  void updateWeapon(Player pl)
  {     weapon.yPos = pl.body.yPos+pl.body.oHeight/3;
 
@@ -84,13 +97,41 @@ class Weapon
       
  }
  
+ void updateWeapon(Enemy en)
+ {
+   weapon.yPos = en.ebody.yPos+en.weaponHoldY;
+   if(en.ebody.xSpeed>0)
+     {
+      weaponDir = 1; 
+     }
+     else if(en.ebody.xSpeed<0)
+     {
+      weaponDir = -1; 
+     }
+     if(weaponDir == 1)
+     {
+         weapon.xPos = en.ebody.xPos+en.weaponHoldX;
+                  copy(thisImage,thisImage.width,0,-thisImage.width,thisImage.height,weapon.xPos,weapon.yPos,thisImage.width,thisImage.height); 
+
+   
+     }
+     else
+     {
+         weapon.xPos = en.ebody.xPos-en.weaponHoldX;
+              image(thisImage,weapon.xPos,weapon.yPos,thisImage.width,thisImage.height); 
+     }
+   
+        this.updateAmmo();
+
+ }
+ 
  void use()
  {
    int x = weapon.xPos+weapon.oWidth*weaponDir;
    int y = weapon.yPos;
    if(ammo.size()<ammoLim)
-     {ammo.add(new drawableObject(x,y,weaponDir*ammoSpeed,0,"rect",ammoSize,ammoSize,ammoColor));
-     playSound("sound1");
+     {ammo.add(new drawableObject(x,y,weaponDir*ammoSpeedX,ammoSpeedY,"rect",ammoSize,ammoSize,ammoColor));
+     playSound(thisSound);
      }
  }
  
@@ -100,8 +141,15 @@ class Weapon
  {
   drawableObject am0 = ammo.get(ii);
   if(am0.checkInBounds()) //checkCollision?
-  {   
-  am0.drawObject();
+  {   if(ammoImage!=null)
+  { if(weaponDir>0)
+      copy(ammoImage,ammoImage.width,0,-ammoImage.width,ammoImage.height,am0.xPos,am0.yPos,ammoImage.width,ammoImage.height);
+   else 
+   {
+           image(ammoImage,am0.xPos,am0.yPos,ammoImage.width,ammoImage.height);
+
+   }
+  }
   am0.moveObject();
   }
   else

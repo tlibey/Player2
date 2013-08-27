@@ -3,6 +3,7 @@ class Loot
 {
  drawableObject loot = new drawableObject();
  String lootType = ""; 
+ PImage thisImage;
  Loot()
 {
  
@@ -24,6 +25,7 @@ Loot(String type,int x, int y)
 
 void generateLootImage(String type)
 {
+  thisImage = findSprite(type);
   if(type == "health")
   {
    loot.type = "health"; 
@@ -65,7 +67,7 @@ void updateLoot(Player pl)
  }
  
  loot.moveObject(); 
- loot.drawObject();
+ image(thisImage,loot.xPos,loot.yPos);
 }
   
   

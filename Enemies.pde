@@ -21,7 +21,7 @@ class Enemies
      Enemy en = enemies.get(ii);
       en.updateEnemy();
       en.handleType(pl);
-     
+      en.eWeapon.updateWeapon(en);
       }
   }
   void moveEnemies(int x, int y)
@@ -29,9 +29,19 @@ class Enemies
         
   for(int ii = 0; ii< enemies.size(); ii++)
     {
-      drawableObject en = enemies.get(ii).ebody;
-      en.xPos+=x;
-      en.yPos+=y; 
+      Enemy en = enemies.get(ii);
+      en.eWeapon.xPos+=x;
+      en.eWeapon.yPos+=y;
+      en.ebody.xPos+=x;
+      en.ebody.yPos+=y; 
+      if(en.eWeapon.ammo.size()>0)
+      {
+      for(int jj = 0; jj<en.eWeapon.ammo.size(); jj++)
+      {
+       en.eWeapon.ammo.get(jj).xPos+=x;
+       en.eWeapon.ammo.get(jj).yPos+=y; 
+      }
+      }
     } 
     for(int ii = 0; ii <eLoot.size(); ii ++)
     {
@@ -42,10 +52,8 @@ class Enemies
 }
   void addBoss()
   {
-   enemies.add(new Enemy(width-60,40,0,0,40,40,0,50));
-   Enemy boss = enemies.get(enemies.size()-1);
-   boss.ebody.type = "boss";
-    
+
+
   }
 }
 
@@ -58,6 +66,8 @@ class Enemy
  int eHeight =30;
  int exSpeed = 0;
  int eySpeed = 0;
+ int weaponHoldX = 20;
+ int weaponHoldY = 20;
  int type = 0;
  
   Weapon eWeapon; 
@@ -69,23 +79,17 @@ class Enemy
  Enemy()
  {
   ebody = new drawableObject(width-20,50,-1,0,"Player",20,50,color(40,240,0));
-  eWeapon = new Weapon(0,0,"Shooter");
+  eWeapon = new Weapon(0,0,"gun","guna");
  }
  Enemy(int x, int y, int t)
  {
    type = t;
   generateType();
   ebody = new drawableObject(x,y,exSpeed,eySpeed,"rect",eWidth,eHeight);
-    eWeapon = new Weapon(0,0,"Shooter");
+    eWeapon = new Weapon(x,y,"gun","guna");
 
  }
-  Enemy(int x, int y, int xS, int yS, int w, int h, color c, int hp)
- {
-  totalHealth = hp;
-  ebody = new drawableObject(x,y,xS,yS,"rect",w,h,c);
-    eWeapon = new Weapon(0,0,"Shooter");
-
- }
+  
  void generateType()
  { 
    
@@ -125,7 +129,14 @@ class Enemy
    //handleALL AI here!
     if(type == 0 && pl.body.xPos != ebody.xPos) //homing
       {
-       ebody.xSpeed = (-ebody.xPos+pl.body.xPos)/abs(ebody.xPos-pl.body.xPos)*1; 
+       ebody.xSpeed = (-ebody.xPos+pl.body.xPos)/abs(ebody.xPos-pl.body.xPos)*1;
+      if(frameCount%20==0)
+     {
+      eWeapon.use();
+     }
+    if(ebody.yPos!=pl.body.yPos)
+     eWeapon.ammoSpeedY =  (-ebody.yPos+pl.body.yPos)/abs(ebody.yPos-pl.body.yPos)*1;
+     eWeapon.ammoSpeedX = 1;
       }
    
    if(type == 1)
@@ -136,6 +147,13 @@ class Enemy
      {
       ebody.ySpeed = 0;
      } 
+     if(frameCount%20==0)
+     {
+      eWeapon.use();
+     }
+     if(ebody.yPos!=pl.body.yPos)
+     eWeapon.ammoSpeedY =  (-ebody.yPos+pl.body.yPos)/abs(ebody.yPos-pl.body.yPos)*1;
+
    }
    if(type == 2)
    {
@@ -149,6 +167,8 @@ class Enemy
          {
           ebody.ySpeed = 0;
          } 
+     if(frameCount % 20 == 0)
+         eWeapon.use();
    }
    else if(type == 3)
    {

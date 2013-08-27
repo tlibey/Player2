@@ -140,7 +140,8 @@ int yEnd = constrain(yStarted+4*(height/scaleFactor),0,level.getRowCount());
          int h = int(v1.charAt(3)+""+v1.charAt(4));
          int w = int(v1.charAt(1)+""+v1.charAt(2));
          int imgIndex = int(v1.charAt(5)+""+v1.charAt(6));
-         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"lWedge",imgIndex));
+         String imID = generateTerrainID(imgIndex);
+         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"lWedge",imID));
 
         }
           else if(v1.charAt(0) == '7')
@@ -148,7 +149,8 @@ int yEnd = constrain(yStarted+4*(height/scaleFactor),0,level.getRowCount());
          int h = int(v1.charAt(3)+""+v1.charAt(4));
          int w = int(v1.charAt(1)+""+v1.charAt(2));
          int imgIndex = int(v1.charAt(5)+""+v1.charAt(6));
-         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"rWedge",imgIndex));
+         String imID = generateTerrainID(imgIndex);
+         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor-yStart+yTrans,w,h,"rWedge",imID));
 
         }
         else if(v1.charAt(0) == '8')
@@ -156,7 +158,8 @@ int yEnd = constrain(yStarted+4*(height/scaleFactor),0,level.getRowCount());
          int h = int(v1.charAt(3)+""+v1.charAt(4));
          int w = int(v1.charAt(1)+""+v1.charAt(2));
          int imgIndex = int(v1.charAt(5)+""+v1.charAt(6));
-         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor+yTrans-yStart,w,h,"rect",imgIndex));
+         String imID = generateTerrainID(imgIndex);
+         t1.terrains.add(new TerrainOJ(ii*scaleFactor+xTrans,jj*scaleFactor+yTrans-yStart,w,h,"rect",imID));
         }
         else if(v1.charAt(0) == '5' && !generatedEns[ii][jj])
         {

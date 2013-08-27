@@ -19,7 +19,7 @@ void checkHitsAndPickups(Enemies ens, Player pl)
                  ens.eLoot.add(new Loot(thisLoot,en.ebody.xPos,en.ebody.yPos));
                 //add scoring?
                  ens.enemies.remove(jj); 
-                 playSound("sound3");
+                 playSound("enemyDeath");
                }
               if(checkPlayerHit(en,pl))
               {
@@ -43,7 +43,7 @@ void checkHitsAndPickups(Enemies ens, Player pl)
      {
        pl.pWeapon.ammo.remove(ii);
          en.currentHealth -= 10;  
-    playSound("sound2");     
+    playSound("enemyHit");     
      }
      if(en.currentHealth<=0)
        hit=true;
