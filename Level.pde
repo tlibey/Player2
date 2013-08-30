@@ -17,11 +17,13 @@ class Level
   boolean[][] generatedEns;
   Terrain t1;
   Enemies e1;
+  Interacts i1;
 
   Level()
   {
    e1 = new Enemies();
    t1 = new Terrain();
+   i1 = new Interacts();
    setViewFrames(); 
    objectGenerator();
   }
@@ -47,7 +49,7 @@ void changeViewFrames(Player pl)
    xTrans-=pl.body.xSpeed; 
    t1.moveTerrain(-pl.body.xSpeed,0);
    e1.moveEnemies(-pl.body.xSpeed,0);
-
+   i1.moveInteracts(-pl.body.xSpeed,0);
 
   }
   else if(pl.body.xPos<=xMargin)
@@ -56,6 +58,8 @@ void changeViewFrames(Player pl)
    xTrans-=pl.body.xSpeed; 
    t1.moveTerrain(-pl.body.xSpeed,0);
    e1.moveEnemies(-pl.body.xSpeed,0);
+   i1.moveInteracts(-pl.body.xSpeed,0);
+
   }
   if(pl.body.yPos<=yMargin)
   {
@@ -65,6 +69,8 @@ void changeViewFrames(Player pl)
    yTrans-=pl.body.ySpeed;
    t1.moveTerrain(0,-pl.body.ySpeed);
     e1.moveEnemies(0,-pl.body.ySpeed);
+    i1.moveInteracts(0,-pl.body.ySpeed);
+
    }
 
   }
@@ -73,6 +79,7 @@ void changeViewFrames(Player pl)
    pl.body.yPos = height-yMargin-1;
   t1.moveTerrain(0,-pl.body.ySpeed);
    e1.moveEnemies(0,-pl.body.ySpeed);
+    i1.moveInteracts(0,-pl.body.ySpeed);
 
    yTrans -= pl.body.ySpeed; 
   }
@@ -82,6 +89,7 @@ void changeViewFrames(Player pl)
    pl.body.ySpeed = 0;
    t1.moveTerrain(0,-pl.body.ySpeed); 
    e1.moveEnemies(0,-pl.body.ySpeed);
+    i1.moveInteracts(0,-pl.body.ySpeed);
 
    yTrans -= pl.body.ySpeed; 
 
@@ -91,9 +99,10 @@ void changeViewFrames(Player pl)
 {
   t1.updateTerrain(pl,e1);
   e1.updateEnemies(pl,t1);
+  i1.updateInteracts(pl);
   changeViewFrames(pl);
-  checkHitsAndPickups(e1,pl);
-
+  checkHitsAndPickups(e1,pl,i1);
+  
   if(xTrans >= width + lastShiftX || xTrans<= -width+lastShiftX)
   {
     terrainCleanup();
@@ -168,6 +177,14 @@ int yEnd = constrain(yStarted+4*(height/scaleFactor),0,level.getRowCount());
          e1.enemies.add(new Enemy(ii*scaleFactor+xTrans,jj*scaleFactor+yTrans-yStart,type));
          generatedEns[ii][jj] = true;
          
+        }
+        else if(v1.charAt(0) == '4' && !generatedEns[ii][jj])
+        {
+          int itype = int(v1.charAt(1)+""+v1.charAt(2));
+          int ltype = int(v1.charAt(3)+""+v1.charAt(4));
+          i1.ias.add(new Interactable(ii*scaleFactor+xTrans,jj*scaleFactor+yTrans-yStart,itype,ltype));
+          generatedEns[ii][jj] = true;
+          println("tesT");
         }
         
       }

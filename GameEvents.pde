@@ -5,7 +5,7 @@ void showExplosion(int x, int y)
   
 }
 
-void checkHitsAndPickups(Enemies ens, Player pl)
+void checkHitsAndPickups(Enemies ens, Player pl, Interacts ias)
 {
  if(ens.enemies.size()>0)
     {
@@ -28,6 +28,7 @@ void checkHitsAndPickups(Enemies ens, Player pl)
               }
        }
       checkPlayerLoot(ens,pl);      
+      checkPlayerLoot(ias,pl);  
     }
 }
 
@@ -94,5 +95,25 @@ void checkHitsAndPickups(Enemies ens, Player pl)
    }
    
   }   
+  }
+  void checkPlayerLoot(Interacts ias, Player pl)
+  {
+       if(ias.loot.size()>0)
+  {
+   for(int ii = ias.loot.size()-1; ii>=0; ii--)
+   {
+     
+     drawableObject temp = ias.loot.get(ii).loot;
+     ias.loot.get(ii).updateLoot(pl);
+    if(checkCollision(temp,pl.body))
+     {
+       pl.playerGetsLoot(ias.loot.get(ii).loot.type);
+       ias.loot.remove(ii);
+     }
+     
+   }
+   
+  } 
+    
   }
   

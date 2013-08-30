@@ -75,7 +75,7 @@ class Enemy
  int currentHealth = 100;
 
  boolean isGrounded = false;
-  
+ PImage thisImage;
  Enemy()
  {
   ebody = new drawableObject(width-20,50,-1,0,"Player",20,50,color(40,240,0));
@@ -97,7 +97,9 @@ class Enemy
   //here mainly change the size shape and appearance of the enemy, change the ai in the handleType function
    if(type == 0)
    {
-    exSpeed = -1; 
+    exSpeed = -1;
+        thisImage = findSprite("en1");
+ 
    }
    if(type == 1)
    {
@@ -106,20 +108,25 @@ class Enemy
      eHeight = 50;
      eWidth = 10;
      totalHealth = 400;
+     thisImage = findSprite("en1");
    }
    if(type == 3)
    {
     eHeight = 10;
     eWidth = 50;
     totalHealth =400; 
+         thisImage = findSprite("en1");
+
    }
   //assign type characteristics 
  }
  
  void updateEnemy()
  {
-     
-  ebody.drawObject();
+  if(thisImage!=null)
+      copy(thisImage,0,0,thisImage.width,thisImage.height,ebody.xPos,ebody.yPos,ebody.oWidth,ebody.oHeight);  
+  else 
+    ebody.drawObject();
   ebody.moveObject(); 
  }
  

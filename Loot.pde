@@ -29,8 +29,8 @@ void generateLootImage(String type)
   if(type == "health")
   {
    loot.type = "health"; 
-   loot.xSpeed = 1;
-   loot.ySpeed = 1;
+   loot.xSpeed = 0;
+   loot.ySpeed = 0;
   }
   else if(type == "bomb")
   {
@@ -55,9 +55,10 @@ void updateLoot(Player pl)
  }
  if(loot.type == "health")
  {
-  if(frameCount%20 == 0)
+  if(frameCount%1 == 0)
  {
   loot.xSpeed = - loot.xSpeed;
+  println("test");
  } 
  if(frameCount%15 == 0)
  {

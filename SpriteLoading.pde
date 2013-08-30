@@ -65,9 +65,24 @@ PImage findSprite(String im)
  }
  
  
+ //Interactables
+ else if(im == "chest")
+ {
+   
+  img = loadImage("Interactables/chest.png");
+ return img; 
+ }
  
  
  
+ //Enemies
+ 
+else if(im == "en1")
+{
+ img = loadImage("enemies/enemy 1.png");
+  
+  
+}
  
  
  

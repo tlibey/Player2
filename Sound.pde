@@ -20,7 +20,7 @@ void initializeSound()
   sound2 = minim.loadSample("sound/SD.wav", 512);
   if ( sound2 == null ) println("Didn't get snare!");
   
-  sound3 = minim.loadSample("sound/dying.mp3",512);
+  sound3 = minim.loadSample("sound/BD.mp3",512);
   if(sound3 == null) println("no sound3");
   
   mainTheme = minim.loadFile("sound/mainTheme.mp3"); //base on level
