@@ -5,6 +5,7 @@ Minim minim;
 AudioSample sound1;
 AudioSample sound2;
 AudioSample sound3;
+AudioSample sound4;
 AudioPlayer mainTheme;
 
 void initializeSound()
@@ -20,10 +21,11 @@ void initializeSound()
   sound2 = minim.loadSample("sound/SD.wav", 512);
   if ( sound2 == null ) println("Didn't get snare!");
   
-  sound3 = minim.loadSample("sound/BD.mp3",512);
+  sound3 = minim.loadSample("sound/dying.mp3",512);
   if(sound3 == null) println("no sound3");
   
-  mainTheme = minim.loadFile("sound/mainTheme.mp3"); //base on level
+  sound4 = minim.loadSample("sound/tada.wav",512);
+  mainTheme = minim.loadFile("sound/onestop.mid"); //base on level
 }
 
 void playSound(String type)
@@ -42,6 +44,11 @@ else if (type == "enemyHit")
 else if(type == "enemyDeath")
 {
   sound3.trigger();
+}
+else if(type == "openChest")
+{
+  
+  sound4.trigger();
 }
   
   

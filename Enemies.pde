@@ -79,14 +79,14 @@ class Enemy
  Enemy()
  {
   ebody = new drawableObject(width-20,50,-1,0,"Player",20,50,color(40,240,0));
-  eWeapon = new Weapon(0,0,"gun","guna");
+  eWeapon = new Weapon(0,0,"egun","guna");
  }
  Enemy(int x, int y, int t)
  {
    type = t;
   generateType();
   ebody = new drawableObject(x,y,exSpeed,eySpeed,"rect",eWidth,eHeight);
-    eWeapon = new Weapon(x,y,"gun","guna");
+    eWeapon = new Weapon(x,y,"egun","guna");
 
  }
   

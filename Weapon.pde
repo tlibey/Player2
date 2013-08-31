@@ -46,7 +46,15 @@ class Weapon
     
     
   }
-  if(weaponType == "gun")
+  if(weaponType == "egun")
+  {
+    ammoLim = 20;
+    ammoSpeedX = 10;
+    ammoSpeedY = 0;
+    weaponDir = -1;
+   thisSound = "";
+  }
+   if(weaponType == "gun")
   {
     ammoLim = 20;
     ammoSpeedX = 10;

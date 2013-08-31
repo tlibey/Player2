@@ -4,6 +4,7 @@ class Loot
  drawableObject loot = new drawableObject();
  String lootType = ""; 
  PImage thisImage;
+ int lastMoved = 0;
  Loot()
 {
  
@@ -29,8 +30,8 @@ void generateLootImage(String type)
   if(type == "health")
   {
    loot.type = "health"; 
-   loot.xSpeed = 0;
-   loot.ySpeed = 0;
+   loot.xSpeed = 1;
+   loot.ySpeed = 1;
   }
   else if(type == "bomb")
   {
@@ -55,16 +56,13 @@ void updateLoot(Player pl)
  }
  if(loot.type == "health")
  {
-  if(frameCount%1 == 0)
+  if(frameCount -lastMoved >= 20)
  {
   loot.xSpeed = - loot.xSpeed;
-  println("test");
+  lastMoved = frameCount;
+  loot.ySpeed = - loot.ySpeed;
  } 
- if(frameCount%15 == 0)
- {
-     loot.ySpeed = - loot.ySpeed;
 
- }
  }
  
  loot.moveObject(); 

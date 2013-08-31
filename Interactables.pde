@@ -87,6 +87,7 @@ class Interactable
    text("Press E to open",obj.xPos+obj.oWidth/2,obj.yPos-5);
    if(checkKey('E'))
      {
+       playSound("openChest");
       return true; 
      }
 

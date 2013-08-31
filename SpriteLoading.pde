@@ -30,6 +30,13 @@ PImage findSprite(String im)
     return img;
   
  } 
+ else if(im == "egun")
+ {
+    img =  loadImage("player/pWeapon1.png");
+    
+    return img;
+  
+ } 
  else if(im == "gun"+"a")
  {
   img = loadImage("player/pWeapon1.png");
